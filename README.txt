@@ -1,5 +1,1 @@
-Marcelo, 
-
-Dá uma olhada no documento de Riscos.
-Não estou conseguindo pensar em muita coisa a mais pra preenchê-lo.
-Olha lá e comenta. (:
+Sistema de gerenciamento de biblioteca notificador de prazo de entrega de livros pegos emprestados por alunos.
