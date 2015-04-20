@@ -1,7 +1,0 @@
-2014-12-01 17:01:20,356 [Worker-1] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
-2014-12-01 17:01:20,376 [main] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
-2014-12-01 17:01:24,486 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/jboss/spec/archetypes/jboss-javaee6-webapp-archetype/7.1.3.Final/jboss-javaee6-webapp-archetype-7.1.3.Final.pom
-2014-12-01 17:01:24,488 [New I/O client worker #2-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/jboss/spec/archetypes/jboss-javaee6-webapp-archetype/7.1.3.Final/jboss-javaee6-webapp-archetype-7.1.3.Final.pom
-2014-12-01 17:01:25,251 [main] INFO  c.n.h.c.p.n.NettyAsyncHttpProvider - Number of application's worked threads is 8
-2014-12-01 17:01:25,691 [New I/O client worker #3-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloading http://repo.maven.apache.org/maven2/org/jboss/spec/archetypes/jboss-javaee6-webapp-archetype/7.1.3.Final/jboss-javaee6-webapp-archetype-7.1.3.Final.jar
-2014-12-01 17:01:26,262 [New I/O client worker #3-1] INFO  o.e.m.c.i.e.AbstractTransferListenerAdapter - Downloaded http://repo.maven.apache.org/maven2/org/jboss/spec/archetypes/jboss-javaee6-webapp-archetype/7.1.3.Final/jboss-javaee6-webapp-archetype-7.1.3.Final.jar
