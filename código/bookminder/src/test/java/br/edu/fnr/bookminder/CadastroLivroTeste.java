@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
-import br.edu.fnr.bookminder.business.CadastroLivro;
+import br.edu.fnr.bookminder.business.LivroBC;
 import br.edu.fnr.bookminder.entidades.Livro;
 import br.edu.fnr.bookminder.excecoes.livro.LivroDuplicadoException;
 import br.edu.fnr.bookminder.excecoes.livro.LivroSemAutorException;
@@ -44,7 +44,7 @@ public class CadastroLivroTeste {
 	Livro livroSemAutor;
 	
 	@Inject
-	CadastroLivro cadastro;
+	LivroBC cadastro;
 	
 	
 	@Before
@@ -65,13 +65,13 @@ public class CadastroLivroTeste {
 				
 	}
 	
-	@After
+	/*@After
 	public void tearDown(){
 		
 		ArrayList<Livro> cadastroVazio = cadastro.getCadastro();
 		cadastroVazio.clear();
 		cadastro.setCadastro(cadastroVazio);
-	}
+	}*/
 	
 	@Test 
 	public void cadastrarLivroComSucesso(){

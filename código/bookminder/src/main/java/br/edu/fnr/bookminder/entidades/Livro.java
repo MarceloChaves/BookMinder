@@ -1,10 +1,15 @@
 package br.edu.fnr.bookminder.entidades;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Livro {
 
+	@Id
+	private String codigo;
 	private String titulo;
 	private String autor;
-	private String codigo;
 	
 	public Livro(){
 		

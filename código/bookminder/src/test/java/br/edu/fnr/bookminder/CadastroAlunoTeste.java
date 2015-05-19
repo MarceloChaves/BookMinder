@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
-import br.edu.fnr.bookminder.business.CadastroAluno;
+import br.edu.fnr.bookminder.business.AlunoBC;
 import br.edu.fnr.bookminder.entidades.Aluno;
 import br.edu.fnr.bookminder.excecoes.aluno.AlunoDuplicadoException;
 import br.edu.fnr.bookminder.excecoes.aluno.AlunoSemEmailException;
@@ -31,7 +31,7 @@ public class CadastroAlunoTeste {
 	ResourceBundle bundle;
 	
 	@Inject
-	CadastroAluno cadastro;
+	AlunoBC cadastro;
 	
 	@Inject
 	Aluno aluno;
@@ -64,14 +64,14 @@ public class CadastroAlunoTeste {
 		alunoSemMatricula.setEmail("aluno.sem.matricula@untrackable.com");
 		
 	}
-	@After
+	/*@After
 	public void tearDown(){
 		
 		ArrayList<Aluno> cadastroVazio = cadastro.getCadastro();
 		cadastroVazio.clear();
 		cadastro.setCadastro(cadastroVazio);
 		
-	}
+	}*/
 	
 	@Test
 	public void cadastrarAlunoComSucesso(){

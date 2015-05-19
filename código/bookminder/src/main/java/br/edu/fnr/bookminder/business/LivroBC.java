@@ -1,8 +1,10 @@
 package br.edu.fnr.bookminder.business;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
 
@@ -11,34 +13,44 @@ import br.edu.fnr.bookminder.excecoes.livro.LivroDuplicadoException;
 import br.edu.fnr.bookminder.excecoes.livro.LivroSemAutorException;
 import br.edu.fnr.bookminder.excecoes.livro.LivroSemCodigoException;
 import br.edu.fnr.bookminder.excecoes.livro.LivroSemTituloException;
+import br.edu.fnr.bookminder.persistence.LivroDAO;
 import br.gov.frameworkdemoiselle.exception.ExceptionHandler;
-import br.gov.frameworkdemoiselle.stereotype.Controller;
+import br.gov.frameworkdemoiselle.lifecycle.Shutdown;
+import br.gov.frameworkdemoiselle.lifecycle.Startup;
+import br.gov.frameworkdemoiselle.stereotype.BusinessController;
+import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import br.gov.frameworkdemoiselle.transaction.Transactional;
 import br.gov.frameworkdemoiselle.util.ResourceBundle;
 
-@Controller
-public class CadastroLivro {
+@BusinessController
+public class LivroBC extends DelegateCrud<Livro, String, LivroDAO> {
 
-	private ArrayList<Livro> cadastro = new ArrayList<Livro>();
+	@Inject
+	private Logger logger;
 	
 	@Inject
-	Logger logger;
-	
-	@Inject
-	ResourceBundle bundle;
+	private ResourceBundle bundle;
 
-	public ArrayList<Livro> getCadastro() {
+	@Inject
+	private LivroDAO livroDAO; 
+	
+	/*public ArrayList<Livro> getCadastro() {
 		return cadastro;
 	}
 
 	public void setCadastro(ArrayList<Livro> cadastro) {
 		this.cadastro = cadastro;
 	}
+	*/
+	public List<Livro> obterLivrosCadastrados(){
+		return livroDAO.findAll();
+	}
 	
-	
+	@Transactional
 	public void cadastrar(Livro livro){
 		
 		validarDados(livro);
-		cadastro.add(livro);
+		livroDAO.insert(livro);
 		logger.info(bundle.getString("cadastroLivro.sucesso",livro.getTitulo(), livro.getAutor(), livro.getCodigo()));
 		
 			
@@ -62,7 +74,17 @@ public class CadastroLivro {
 	}
 
 	public boolean estaCadastrado(Livro livro) {
-		return cadastro.contains(livro);
+		return obterLivrosCadastrados().contains(livro);
+	}
+	
+	@Startup
+	public void iniciar(){
+		logger.info("Iniciando...! ò_Ó");
+	}
+	
+	@Shutdown
+	public void finalizar(){
+		logger.info("Acabou a porcaria!! @__@");
 	}
 	
 	@ExceptionHandler

@@ -12,11 +12,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 
-import br.edu.fnr.bookminder.business.CadastroEmprestimo;
+import br.edu.fnr.bookminder.business.EmprestimoBC;
 import br.edu.fnr.bookminder.entidades.Aluno;
 import br.edu.fnr.bookminder.entidades.Emprestimo;
 import br.edu.fnr.bookminder.entidades.Livro;
 import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoDuplicadoException;
+import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoLimiteExcedidoException;
 import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoSemAlunoException;
 import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoSemDataDevolucaoException;
 import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoSemDataException;
@@ -35,7 +36,7 @@ public class CadastroEmprestimoTeste {
 	private Logger logger;
 
 	@Inject 
-	private CadastroEmprestimo cadastro;
+	private EmprestimoBC cadastro;
 
 	@Inject
 	private Emprestimo emprestimo;
@@ -54,7 +55,9 @@ public class CadastroEmprestimoTeste {
 
 	@Inject
 	private Emprestimo emprestimoSemDataDevolucao;
-
+	
+	@Inject Emprestimo emprestimoLimiteExcedido;
+	
 	@Inject
 	private Aluno aluno;
 
@@ -101,31 +104,45 @@ public class CadastroEmprestimoTeste {
 		emprestimoSemDataDevolucao.setId("06");
 		emprestimoSemDataDevolucao.adicionarLivro(livro);
 		emprestimoSemDataDevolucao.setDataEmprestimo("18/04/2015");
-
+		
+		emprestimoLimiteExcedido.setAluno(aluno);
+		emprestimoLimiteExcedido.setId("07");
+		emprestimoLimiteExcedido.setDataEmprestimo("18/04/2015");
+		emprestimoLimiteExcedido.setDataDevolução("24/04/2015");
 	}
 
-	@After
+	/*@After
 	public void tearDown(){
+		
+		
+		ArrayList<Livro> livrosEmprestados = emprestimo.getLivrosEmprestados();
+		livrosEmprestados.clear();
+		emprestimo.setLivrosEmprestados(livrosEmprestados);
+		
+		
 		ArrayList<Emprestimo> cadastroVazio = cadastro.getCadastro();
 		cadastroVazio.clear();
 		cadastro.setCadastro(cadastroVazio);
 	}
-
+*/
 	@Test
-	public void cadastrarEmprestimoComSucessos(){
+	public void cadastrarEmprestimoComSucesso(){
 
 		logger.info(bundle.getString("processo.inicio", "cadastrarEmprestimoComSucesso"));
 
+		System.out.println(emprestimo.getLivrosEmprestados().size());
 		cadastro.cadastrar(emprestimo);
+		
+		logger.info(bundle.getString("processo.fim", "cadastrarEmprestimoComSucesso"));
 		Assert.assertTrue(cadastro.estaCadastrado(emprestimo));
 
-		logger.info(bundle.getString("processo.fim", "cadastrarEmprestimoComSucesso"));
+		
 	}
 
 	@Test (expected = EmprestimoDuplicadoException.class)
 	public void falhaAoTentarCadastrarEmprestimoDuplicado(){
 
-		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarEmprestimosoDuplicado"));
+		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarEmprestimoDuplicado"));
 		cadastro.cadastrar(emprestimo);
 		cadastro.cadastrar(emprestimo);
 	}
@@ -165,5 +182,26 @@ public class CadastroEmprestimoTeste {
 		cadastro.cadastrar(emprestimoSemDataDevolucao);
 	}
 
+	@Test (expected = EmprestimoLimiteExcedidoException.class)
+	public void falhaAoTentarCadastrarEmprestimoComLimiteExcedido(){
+		
+		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarEmprestimoComLimiteExcedido"));
+
+		livro.setCodigo("01");
+		emprestimoLimiteExcedido.adicionarLivro(livro);
+		
+		livro.setCodigo("02");
+		emprestimoLimiteExcedido.adicionarLivro(livro);
+		
+		livro.setCodigo("03");
+		emprestimoLimiteExcedido.adicionarLivro(livro);
+		
+		livro.setCodigo("04");
+		
+		emprestimoLimiteExcedido.adicionarLivro(livro);
+		livro.setCodigo("05");
+		
+		cadastro.cadastrar(emprestimoLimiteExcedido);
+	}
 
 }

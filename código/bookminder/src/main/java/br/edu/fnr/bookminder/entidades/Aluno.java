@@ -1,10 +1,15 @@
 package br.edu.fnr.bookminder.entidades;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Aluno {
 
+	@Id
+	private String matricula;
 	private String nome;
 	private String email;
-	private String matricula;
 	
 	
 	public Aluno(){

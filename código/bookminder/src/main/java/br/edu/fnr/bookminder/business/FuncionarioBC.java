@@ -1,8 +1,9 @@
 package br.edu.fnr.bookminder.business;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
 
@@ -11,12 +12,17 @@ import br.edu.fnr.bookminder.excecoes.funcionario.FuncionarioDuplicadoException;
 import br.edu.fnr.bookminder.excecoes.funcionario.FuncionarioSemCpfException;
 import br.edu.fnr.bookminder.excecoes.funcionario.FuncionarioSemNomeException;
 import br.edu.fnr.bookminder.excecoes.funcionario.FuncionarioSemSenhaException;
+import br.edu.fnr.bookminder.persistence.FuncionarioDAO;
 import br.gov.frameworkdemoiselle.exception.ExceptionHandler;
-import br.gov.frameworkdemoiselle.stereotype.Controller;
+import br.gov.frameworkdemoiselle.lifecycle.Shutdown;
+import br.gov.frameworkdemoiselle.lifecycle.Startup;
+import br.gov.frameworkdemoiselle.stereotype.BusinessController;
+import br.gov.frameworkdemoiselle.template.DelegateCrud;
+import br.gov.frameworkdemoiselle.transaction.Transactional;
 import br.gov.frameworkdemoiselle.util.ResourceBundle;
 
-@Controller
-public class CadastroFuncionario {
+@BusinessController
+public class FuncionarioBC extends DelegateCrud<Funcionario, String, FuncionarioDAO> {
 
 	@Inject
 	private Logger logger;
@@ -24,24 +30,29 @@ public class CadastroFuncionario {
 	@Inject
 	private ResourceBundle bundle;
 
-	private ArrayList<Funcionario> cadastro = new ArrayList<Funcionario>();
+	@Inject
+	private FuncionarioDAO funcionarioDAO;
+	
 
-
-	public ArrayList<Funcionario> getCadastro() {
+	/*public ArrayList<Funcionario> getCadastro() {
 		return cadastro;
 	}
 
 	public void setCadastro(ArrayList<Funcionario> cadastro) {
 		this.cadastro = cadastro;
-	}
+	}*/
 
+	@Transactional
 	public void cadastrar(Funcionario funcionario) {
 
 		validarDados(funcionario);
-		cadastro.add(funcionario);
+		funcionarioDAO.insert(funcionario);
 		logger.info(bundle.getString("cadastroFuncionario.sucesso", funcionario.getNome(), funcionario.getCpf()));
 	}
 
+	public List<Funcionario> obterFuncionariosCadastrados(){
+		return funcionarioDAO.findAll();
+	}
 	private void validarDados(Funcionario funcionario){
 
 		if(funcionario.getCpf() == null){
@@ -63,9 +74,19 @@ public class CadastroFuncionario {
 
 	public boolean estaCadastrado(Funcionario funcionario) {
 
-		return cadastro.contains(funcionario);
+		return obterFuncionariosCadastrados().contains(funcionario);
 	}
 
+	@Startup
+	public void iniciar(){
+		logger.info("Iniciando...! ò_Ó");
+	}
+	
+	@Shutdown
+	public void finalizar(){
+		logger.info("Acabou a porcaria!! @__@");
+	}
+	
 	@ExceptionHandler
 	public void tratarDuplicado(FuncionarioDuplicadoException e){
 

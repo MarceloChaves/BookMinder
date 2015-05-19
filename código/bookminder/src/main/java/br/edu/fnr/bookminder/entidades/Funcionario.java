@@ -1,9 +1,14 @@
 package br.edu.fnr.bookminder.entidades;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Funcionario {
 	
-	private String nome;
+	@Id
 	private String cpf;
+	private String nome;
 	private String senha;
 	
 	
@@ -38,7 +43,6 @@ public class Funcionario {
 	public boolean equals(Object funcionario){
 		
 		String cpfObtido = ((Funcionario) funcionario).getCpf();
-		
 		return cpfObtido.equals(this.cpf);
 	}
 	

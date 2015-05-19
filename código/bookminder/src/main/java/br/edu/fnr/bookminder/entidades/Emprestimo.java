@@ -1,15 +1,29 @@
 package br.edu.fnr.bookminder.entidades;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.inject.Inject;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import br.gov.frameworkdemoiselle.util.ResourceBundle;
+
+@Entity
 public class Emprestimo {
 	
+	@Id
 	private String id;
-	private ArrayList<Livro> livrosEmprestados = new ArrayList<Livro>();
+	
+	@OneToMany
+	private List<Livro> livrosEmprestados = new ArrayList<Livro>();
 	private Aluno aluno;
 	private String dataEmprestimo;
 	private String dataDevolução;
 	
+	@Inject
+	ResourceBundle bundle;
 	
 	public Emprestimo(){
 		
@@ -30,7 +44,7 @@ public class Emprestimo {
 	}
 
 
-	public ArrayList<Livro> getLivrosEmprestados() {
+	public List<Livro> getLivrosEmprestados() {
 		return livrosEmprestados;
 	}
 
@@ -40,8 +54,8 @@ public class Emprestimo {
 	}
 
 	public void adicionarLivro(Livro livro){
-		livrosEmprestados.add(livro);
 		
+		livrosEmprestados.add(livro);
 	}
 
 	public Aluno getAluno() {

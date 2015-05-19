@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 
 import org.slf4j.Logger;
 
-import br.edu.fnr.bookminder.business.CadastroFuncionario;
+import br.edu.fnr.bookminder.business.FuncionarioBC;
 import br.edu.fnr.bookminder.entidades.Funcionario;
 import br.edu.fnr.bookminder.excecoes.funcionario.FuncionarioDuplicadoException;
 import br.edu.fnr.bookminder.excecoes.funcionario.FuncionarioSemCpfException;
@@ -30,7 +30,7 @@ public class CadastroFuncionarioTeste {
 	@Inject
 	private ResourceBundle bundle;
 	@Inject
-	private CadastroFuncionario cadastro;
+	private FuncionarioBC cadastro;
 	@Inject
 	private Funcionario funcionario;
 	@Inject
@@ -63,13 +63,13 @@ public class CadastroFuncionarioTeste {
 		funcionarioSemSenha.setNome("Funcionario sem senha");
 
 	}
-	@After
+	/*@After
 	public void tearDown(){
 
 		ArrayList<Funcionario> cadastroVazio = cadastro.getCadastro();
 		cadastroVazio.clear();
 		cadastro.setCadastro(cadastroVazio);
-	}
+	}*/
 
 	@Test
 	public void cadastrarFuncionarioComSucesso() {
