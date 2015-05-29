@@ -3,7 +3,6 @@ package br.edu.fnr.bookminder.business;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
 
@@ -23,6 +22,7 @@ import br.gov.frameworkdemoiselle.util.ResourceBundle;
 
 @BusinessController
 public class FuncionarioBC extends DelegateCrud<Funcionario, String, FuncionarioDAO> {
+	private static final long serialVersionUID = -3549444961681097886L;
 
 	@Inject
 	private Logger logger;
@@ -33,14 +33,6 @@ public class FuncionarioBC extends DelegateCrud<Funcionario, String, Funcionario
 	@Inject
 	private FuncionarioDAO funcionarioDAO;
 	
-
-	/*public ArrayList<Funcionario> getCadastro() {
-		return cadastro;
-	}
-
-	public void setCadastro(ArrayList<Funcionario> cadastro) {
-		this.cadastro = cadastro;
-	}*/
 
 	@Transactional
 	public void cadastrar(Funcionario funcionario) {

@@ -1,10 +1,8 @@
 package br.edu.fnr.bookminder.business;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
 
@@ -24,6 +22,7 @@ import br.gov.frameworkdemoiselle.util.ResourceBundle;
 
 @BusinessController
 public class LivroBC extends DelegateCrud<Livro, String, LivroDAO> {
+	private static final long serialVersionUID = 4075724791446510998L;
 
 	@Inject
 	private Logger logger;
@@ -34,14 +33,6 @@ public class LivroBC extends DelegateCrud<Livro, String, LivroDAO> {
 	@Inject
 	private LivroDAO livroDAO; 
 	
-	/*public ArrayList<Livro> getCadastro() {
-		return cadastro;
-	}
-
-	public void setCadastro(ArrayList<Livro> cadastro) {
-		this.cadastro = cadastro;
-	}
-	*/
 	public List<Livro> obterLivrosCadastrados(){
 		return livroDAO.findAll();
 	}

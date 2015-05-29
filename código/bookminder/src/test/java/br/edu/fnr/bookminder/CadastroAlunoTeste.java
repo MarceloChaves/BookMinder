@@ -1,6 +1,8 @@
 package br.edu.fnr.bookminder;
 
+
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,7 +33,7 @@ public class CadastroAlunoTeste {
 	ResourceBundle bundle;
 	
 	@Inject
-	AlunoBC cadastro;
+	AlunoBC alunoBC;
 	
 	@Inject
 	Aluno aluno;
@@ -64,22 +66,26 @@ public class CadastroAlunoTeste {
 		alunoSemMatricula.setEmail("aluno.sem.matricula@untrackable.com");
 		
 	}
-	/*@After
+	@After
 	public void tearDown(){
 		
-		ArrayList<Aluno> cadastroVazio = cadastro.getCadastro();
-		cadastroVazio.clear();
-		cadastro.setCadastro(cadastroVazio);
+		List<Aluno> alunosCadastrados = alunoBC.findAll();
+		List<String> alunoIds = new ArrayList<String>();
 		
-	}*/
+		for(Aluno aluno : alunosCadastrados){
+			
+			alunoIds.add(aluno.getMatricula());
+		}
+		alunoBC.delete(alunoIds);
+	}
 	
 	@Test
 	public void cadastrarAlunoComSucesso(){
 		
 		logger.info(bundle.getString("processo.inicio", "cadastrarAlunoComSucesso"));
 		
-		cadastro.cadastrar(aluno);
-		Assert.assertTrue(cadastro.estaCadastrado(aluno));
+		alunoBC.cadastrar(aluno);
+		Assert.assertTrue(alunoBC.estaCadastrado(aluno));
 		
 		logger.info(bundle.getString("processo.fim", "cadastrarAlunoComSucesso"));
 	}
@@ -89,29 +95,29 @@ public class CadastroAlunoTeste {
 	public void falhaAoTentarCadastrarAlunoDuplicado(){
 		
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarAlunoDuplicado"));
-		cadastro.cadastrar(aluno);
-		cadastro.cadastrar(aluno);
+		alunoBC.cadastrar(aluno);
+		alunoBC.cadastrar(aluno);
 	}
 	
 	@Test (expected = AlunoSemMatriculaException.class)
 	public void falhaAoTentarCadastarAlunoSemMatricula(){
 		
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarAlunoSemMatricula"));
-		cadastro.cadastrar(alunoSemMatricula);
+		alunoBC.cadastrar(alunoSemMatricula);
 	}
 	
 	@Test (expected = AlunoSemNomeException.class)
 	public void falhaAoTentarCadastrarAlunoSemNome(){
 		
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarAlunoSemNome"));
-		cadastro.cadastrar(alunoSemNome);
+		alunoBC.cadastrar(alunoSemNome);
 	}
 	
 	@Test (expected = AlunoSemEmailException.class)
 	public void falhaAoTentarCadastrarAlunoSemEmail(){
 		
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarAlunoSemEmail"));
-		cadastro.cadastrar(alunoSemEmail);
+		alunoBC.cadastrar(alunoSemEmail);
 	}
 	
 }

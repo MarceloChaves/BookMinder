@@ -1,6 +1,7 @@
 package br.edu.fnr.bookminder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,7 +31,7 @@ public class CadastroFuncionarioTeste {
 	@Inject
 	private ResourceBundle bundle;
 	@Inject
-	private FuncionarioBC cadastro;
+	private FuncionarioBC funcionarioBC;
 	@Inject
 	private Funcionario funcionario;
 	@Inject
@@ -63,21 +64,28 @@ public class CadastroFuncionarioTeste {
 		funcionarioSemSenha.setNome("Funcionario sem senha");
 
 	}
-	/*@After
+	@After
 	public void tearDown(){
-
-		ArrayList<Funcionario> cadastroVazio = cadastro.getCadastro();
-		cadastroVazio.clear();
-		cadastro.setCadastro(cadastroVazio);
-	}*/
+	
+		List<Funcionario> funcionariosCadastrados = funcionarioBC.findAll();
+		List<String> funcionarioIds = new ArrayList<String>();
+		
+		for(Funcionario funcionario : funcionariosCadastrados){
+			
+			funcionarioIds.add(funcionario.getCpf());
+		}
+		
+		funcionarioBC.delete(funcionarioIds);
+	}
+	
 
 	@Test
 	public void cadastrarFuncionarioComSucesso() {
 
 		logger.info(bundle.getString("processo.inicio", "cadastrarFuncionarioComSucesso"));
 		
-		cadastro.cadastrar(funcionario);
-		Assert.assertTrue(cadastro.estaCadastrado(funcionario));
+		funcionarioBC.cadastrar(funcionario);
+		Assert.assertTrue(funcionarioBC.estaCadastrado(funcionario));
 
 		logger.info(bundle.getString("processo.fim", "cadastrarFuncionarioComSucesso"));
 	}
@@ -87,8 +95,8 @@ public class CadastroFuncionarioTeste {
 
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarFuncionarioDuplicado"));
 		
-		cadastro.cadastrar(funcionarioDuplicado);
-		cadastro.cadastrar(funcionarioDuplicado);
+		funcionarioBC.cadastrar(funcionarioDuplicado);
+		funcionarioBC.cadastrar(funcionarioDuplicado);
 		
 
 	}
@@ -97,7 +105,7 @@ public class CadastroFuncionarioTeste {
 	public void falhaAoTentarCadastrarFuncionarioSemCPF(){
 
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarFuncionarioSemCPF"));
-		cadastro.cadastrar(funcionarioSemCPF);
+		funcionarioBC.cadastrar(funcionarioSemCPF);
 		
 	}
 
@@ -105,7 +113,7 @@ public class CadastroFuncionarioTeste {
 	public void falhaAoTentarCadastrarFuncionarioSemSenha(){
 
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarFuncionarioSemSenha"));
-		cadastro.cadastrar(funcionarioSemSenha);
+		funcionarioBC.cadastrar(funcionarioSemSenha);
 		
 
 	}
@@ -114,7 +122,7 @@ public class CadastroFuncionarioTeste {
 	public void falharAoTentarCadastrarFuncionarioSemNome(){
 
 		logger.info(bundle.getString("processo.inicio", "falharAoTentarCadastrarFuncionarioSemNome"));
-		cadastro.cadastrar(funcionarioSemNome);
+		funcionarioBC.cadastrar(funcionarioSemNome);
 	
 
 	}

@@ -2,15 +2,17 @@ package br.edu.fnr.bookminder.entidades;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-//import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Notificacao {
 
 	@Id
-//@GeneratedValue // gerado automaticamente? x Aplicação
+	@GeneratedValue
 	String id;
+	
+	@OneToOne
 	Emprestimo emprestimo;
 
 	

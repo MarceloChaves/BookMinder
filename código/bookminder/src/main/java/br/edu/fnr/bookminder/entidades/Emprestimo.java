@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -14,6 +15,7 @@ import br.gov.frameworkdemoiselle.util.ResourceBundle;
 public class Emprestimo {
 	
 	@Id
+	@GeneratedValue
 	private String id;
 	
 	@OneToMany

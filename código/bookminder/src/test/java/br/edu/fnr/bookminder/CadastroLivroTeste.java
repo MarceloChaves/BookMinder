@@ -1,6 +1,7 @@
 package br.edu.fnr.bookminder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -44,7 +45,7 @@ public class CadastroLivroTeste {
 	Livro livroSemAutor;
 	
 	@Inject
-	LivroBC cadastro;
+	LivroBC livroBC;
 	
 	
 	@Before
@@ -65,21 +66,27 @@ public class CadastroLivroTeste {
 				
 	}
 	
-	/*@After
+	@After
 	public void tearDown(){
 		
-		ArrayList<Livro> cadastroVazio = cadastro.getCadastro();
-		cadastroVazio.clear();
-		cadastro.setCadastro(cadastroVazio);
-	}*/
+		List<Livro> livrosCadastrados = livroBC.findAll();
+		List<String> livroIds = new ArrayList<String>();
+		
+		for(Livro livro : livrosCadastrados){
+			
+			livroIds.add(livro.getCodigo());
+		}
+		
+		livroBC.delete(livroIds);
+	}
 	
 	@Test 
 	public void cadastrarLivroComSucesso(){
 		
 		logger.info(bundle.getString("processo.inicio", "cadastrarLivroComSucesso"));
 		
-		cadastro.cadastrar(livro);
-		Assert.assertTrue(cadastro.estaCadastrado(livro));
+		livroBC.cadastrar(livro);
+		Assert.assertTrue(livroBC.estaCadastrado(livro));
 		
 		logger.info(bundle.getString("processo.fim", "cadastrarLivroComSucesso"));
 	}
@@ -88,29 +95,29 @@ public class CadastroLivroTeste {
 	public void falhaAoTentarCadastrarLivroDuplicado(){
 		
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarLivroDuplicado"));
-		cadastro.cadastrar(livro);
-		cadastro.cadastrar(livro);
+		livroBC.cadastrar(livro);
+		livroBC.cadastrar(livro);
 	}
 	
 	@Test (expected = LivroSemCodigoException.class)
 	public void falhaAoTentarCadastrarLivroSemCodigo(){
 		
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarLivroSemCodigo"));
-		cadastro.cadastrar(livroSemCodigo);
+		livroBC.cadastrar(livroSemCodigo);
 	}
 	
 	@Test (expected = LivroSemAutorException.class)
 	public void falhaAoTentarCadastrarLivroSemAutor(){
 	
 		logger.info(bundle.getString("processo.inicio", "falhaAoTentarCadastrarLivroSemAutor"));
-		cadastro.cadastrar(livroSemAutor);
+		livroBC.cadastrar(livroSemAutor);
 	}
 	
 	@Test (expected = LivroSemTituloException.class) 
 	public void falharAoTentarCadastrarLivroSemTitulo(){
 
 		logger.info(bundle.getString("processo.inicio", "falharAoTentarCadastrarLivroSemTitulo"));
-		cadastro.cadastrar(livroSemTitulo);
+		livroBC.cadastrar(livroSemTitulo);
 		
 	}
 }

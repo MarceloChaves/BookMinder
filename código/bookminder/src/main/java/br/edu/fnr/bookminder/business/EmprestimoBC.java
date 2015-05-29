@@ -1,10 +1,8 @@
 package br.edu.fnr.bookminder.business;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 
 import org.slf4j.Logger;
 
@@ -16,7 +14,6 @@ import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoLimiteExcedidoExcepti
 import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoSemAlunoException;
 import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoSemDataDevolucaoException;
 import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoSemDataException;
-import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoSemIdException;
 import br.edu.fnr.bookminder.excecoes.emprestimo.EmprestimoSemLivroException;
 import br.edu.fnr.bookminder.persistence.EmprestimoDAO;
 import br.gov.frameworkdemoiselle.exception.ExceptionHandler;
@@ -29,6 +26,7 @@ import br.gov.frameworkdemoiselle.util.ResourceBundle;
 
 @BusinessController
 public class EmprestimoBC extends DelegateCrud<Emprestimo, String, EmprestimoDAO> {
+	private static final long serialVersionUID = 1819899610789386106L;
 
 	@Inject
 	private Logger logger;
@@ -43,14 +41,6 @@ public class EmprestimoBC extends DelegateCrud<Emprestimo, String, EmprestimoDAO
 	private EmprestimoDAO emprestimoDAO;
 
 	
-	/*public ArrayList<Emprestimo> getCadastro() {
-		return cadastro;
-	}
-
-	public void setCadastro(ArrayList<Emprestimo> cadastro) {
-		this.cadastro = cadastro;
-	}
-*/
 	@Transactional
 	public void cadastrar(Emprestimo emprestimo){
 
@@ -67,10 +57,7 @@ public class EmprestimoBC extends DelegateCrud<Emprestimo, String, EmprestimoDAO
 
 	private void validarDados(Emprestimo emprestimo) {
 
-		if(emprestimo.getId() == null){
-			throw new EmprestimoSemIdException(bundle.getString("cadastroEmprestimo.erroSemId"));
-
-		}else if(estaCadastrado(emprestimo)){
+		if(estaCadastrado(emprestimo)){
 
 			throw new EmprestimoDuplicadoException(bundle.getString("cadastroEmprestimo.erroDuplicado"));
 
@@ -120,14 +107,6 @@ public class EmprestimoBC extends DelegateCrud<Emprestimo, String, EmprestimoDAO
 
 		logger.warn(e.getMessage());
 		logger.info(bundle.getString("processo.fim", "falhaAoTentarCadastrarEmprestimosoDuplicado"));
-		throw e;
-	}
-
-	@ExceptionHandler
-	public void tratarSemId(EmprestimoSemIdException e){
-
-		logger.warn(e.getMessage());
-		logger.info(bundle.getString("processo.fim", "falhaAoTentarCadastrarEmprestimoSemId"));
 		throw e;
 	}
 
